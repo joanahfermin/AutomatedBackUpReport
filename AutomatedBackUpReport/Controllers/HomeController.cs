@@ -18,11 +18,6 @@ namespace AutomatedBackUpReport.Controllers
             return View();
         }
 
-        public IActionResult AccomplishmentReport()
-        {
-            return View();
-        }
-
         public IActionResult Privacy()
         {
             return View();
