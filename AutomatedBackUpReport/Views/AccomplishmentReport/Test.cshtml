@@ -1,0 +1,26 @@
+﻿@{
+	ViewData["Title"] = "Accomplishment Report";
+	int month = ViewBag.month;
+	int year = ViewBag.year;
+}
+
+<div id="calendar" style="width:600px"></div>
+
+<!-- Correct FullCalendar CDN links -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            //themeSystem: 'bootstrap5',
+            initialView: 'dayGridMonth',
+            initialDate: '@ViewBag.Year-@ViewBag.Month.ToString("D2")-01',
+            dateClick: function(info) {
+                alert('Clicked on: ' + info.dateStr);
+                // Handle your day click here
+            }
+        });
+        calendar.render();
+    });
+</script>

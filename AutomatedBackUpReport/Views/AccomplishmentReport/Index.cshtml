@@ -1,0 +1,72 @@
+﻿@{
+	ViewData["Title"] = "Accomplishment Report";
+	int month = ViewBag.month;
+	int year = ViewBag.year;
+}
+
+
+<style>
+	.fc-daygrid-day-number {
+		text-align: center !important;
+		width: 50% !important;
+		font-size: 15px !important;
+		color: #1fa1ff !important;
+	}
+	
+	.fc-col-header-cell-cushion{
+		background-color: #2c3e50 !important;
+		color: #ffffff !important;
+		text-decoration: none !important;
+	}
+	
+	 .fc-col-header-cell{
+		 background-color: #2c3e50 !important;
+		 color: #ffffff !important;
+	 }
+	
+	.fc-daygrid-day:hover {
+		background-color: #2c3e50 !important;
+		color: #fff !important;
+	}
+	
+	.custom-day a {
+		color: #ff0000 !important;
+	}
+	
+	.custom-day {
+		background-color: white !important;
+		text-align: center !important;
+		font-size: 18px !important;
+		color: #ffffff !important;
+	}
+</style>
+
+<div id="calendar" style="width:600px; margin: 0 auto;"></div>
+
+<!-- Correct FullCalendar CDN links -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"> </script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+				var calendarEl = document.getElementById('calendar');
+				var calendar = new FullCalendar.Calendar(calendarEl, {
+					initialView: 'dayGridMonth',
+					initialDate: '@ViewBag.Year-@ViewBag.Month.ToString("D2")-01',
+
+					dayCellClassNames: function(date){
+							if(date.isToday){
+								return['custom-day'];
+							}
+					},
+
+					dateClick: function(info) {
+						alert('Clicked on: ' + info.dateStr);
+						}
+				});
+				calendar.render();
+			});
+</script>
+
+
+
+
