@@ -39,7 +39,69 @@
 		font-size: 18px !important;
 		color: #ffffff !important;
 	}
+	
+	
+	#monthDropdown, #yearDropdown{
+			width: auto !important;
+			max-width: 150px;
+			font-size: 16px;
+			background-color: #2c3e50;
+			color: white;
+				border-radius: 4px;
+		display: inline !important;
+	}
+		
+		.fc-toolbar-title {
+			display: none !important;
+	}
 </style>
+
+<div class="d-flex justify-content-center">
+	<select id="monthDropdown" class="form-control" onchange="updateMonthCalendar()">
+		@{
+			string[] months = new string[]
+			{
+				"January", "February", "March", "April", "May", "June",
+				"July", "August", "September", "October", "November", "December"
+			};
+      
+			@for (int i = 0; i < months.Length; i++)
+			{
+				<option value="@(i+1)" selected="@(month == (i+1))">@months[i]</option>
+			}
+		}
+	</select>
+	
+	<select id="yearDropdown" class="form-control" onchange="updateMonthCalendar()">
+		@{
+			int startingYear = 2024;
+		}
+
+		@for (int i = startingYear; i <= DateTime.Now.Year + 1; i++)
+		{
+			<option value="@i" selected="@i">@i</option>
+		}
+	</select>
+</div>
+
+<script>
+	function updateMonthCalendar() {
+		var month = document.getElementById("monthDropdown").value;
+		var year = document.getElementById("yearDropdown").value;
+		
+		if (month < 10) {
+			calendar.gotoDate(year+'-0'+month+'-01');
+		}
+		else{
+			calendar.gotoDate(year+'-'+month+'-01');
+		}
+	}
+	
+	function udpateDropdown(newDate){
+		document.getElementById("monthDropdown").value = newDate.getMonth() + 1;
+		document.getElementById("yearDropdown").value = newDate.getFullYear();
+	}
+</script>
 
 <div id="calendar" style="width:600px; margin: 0 auto;"></div>
 
@@ -47,9 +109,11 @@
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.18/index.global.min.js"> </script>
 
 <script>
+	var calendar;
 	document.addEventListener('DOMContentLoaded', function() {
+		
 				var calendarEl = document.getElementById('calendar');
-				var calendar = new FullCalendar.Calendar(calendarEl, {
+				calendar = new FullCalendar.Calendar(calendarEl, {
 					initialView: 'dayGridMonth',
 					initialDate: '@ViewBag.Year-@ViewBag.Month.ToString("D2")-01',
 
@@ -59,11 +123,26 @@
 							}
 					},
 
+					datesSet: function(dateInfo) {
+						udpateDropdown(dateInfo.view.currentStart);
+					},
+					
 					dateClick: function(info) {
 						alert('Clicked on: ' + info.dateStr);
 						}
-				});
+					}
+				);
 				calendar.render();
+
+				setTimeout(function() {
+				var leftToolbar = document.querySelector('.fc-toolbar-chunk:first-child');
+				if (leftToolbar) {
+					leftToolbar.innerHTML = '';
+					leftToolbar.appendChild(document.getElementById('monthDropdown'));
+					leftToolbar.appendChild(document.getElementById('yearDropdown'));
+				}
+				}, 100);
+		
 			});
 </script>
 
