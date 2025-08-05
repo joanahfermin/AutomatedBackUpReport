@@ -1,2 +1,1 @@
-initial
-test
+initial test jenkins trigger
